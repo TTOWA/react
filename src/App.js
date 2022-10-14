@@ -1,9 +1,13 @@
 // /* eslint-disable */ //WARNING메시지 끄기
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef,} from 'react';
 import logo from './logo.svg';
+import { Player, Controls} from '@lottiefiles/react-lottie-player';
+import lottieData from './119806-alarm-clock.json';
 import './App.css';
 
+
 function App() {
+
   let [글제목, 글제목변경] = useState(['나의코트 추천', '강남 우동맛집', '파이선독학']); // a:state에 보관했던자료, b:state변경 도와주는 함수
   let [상품, 상품변경] = useState('여자코트'); 
   let [추천, 추천변경] = useState(0);
@@ -16,8 +20,23 @@ function App() {
   //자료 변동시 자동으로 html에 반영되게 만들고 싶을때
   let posts = '강남 맛집';
   let stylee = {color : 'red', fontSize : '10px'};
+
+  const playerRef = useRef(Player);
+  const handlePlay = () => playerRef.current.play();
+  const handleStop = () => {playerRef.current.stop(); addclass();}
+  const handlePause = () => playerRef.current.pause(); 
+  const handleSetLoop = () => playerRef.current.setLoop(true);
+
+  const ref = useRef(null);
+  const addclass=()=>{
+     const h1 = ref.current; // corresponding DOM node
+     h1.className = "active";
+  }  
  
   return (
+
+    
+
     <div className="App">
       <div className="black-nav">
         <h3 style={{fontSize : '30px', color: 'red'}}>React Blog</h3>
@@ -44,6 +63,27 @@ function App() {
         <p>9월5일</p>
         <hr/>
       </div>
+      
+
+      <Player
+        //src={lottieData}
+        src="https://assets1.lottiefiles.com/packages/lf20_myejiggj.json"
+        className="players"
+        //loop
+        autoplay
+        style={{ height: '200px', width: '300px' }}
+        ref={playerRef}
+      />
+      <Controls
+        visible={true}
+        darkTheme={false}
+        buttons={['play', 'repeat', 'frame', 'stop']}
+      />
+
+      <button onClick={handlePlay}>Play</button>
+      <button ref={ref} onClick={handleStop}>Stop</button>
+      <button onClick={handlePause}>Pause</button>
+      <button onClick={handleSetLoop}>Loop</button>
       {/* <div className="modal" style={{marginTop:'20px',padding:'20px',background:'#eee',textAlign:'left'}}>
         <h4>제목</h4>
         <p>날짜</p>
